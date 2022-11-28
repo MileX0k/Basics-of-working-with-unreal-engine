@@ -27,8 +27,11 @@ protected:
 	UPROPERTY()
 		ACannon* Cannon;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cannon")
 		TSubclassOf<ACannon> CannonClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cannon")
+		TSubclassOf<ACannon> CannonClassSecond = nullptr;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Cannon")
 		class UArrowComponent* CannonSetupPoint;
@@ -55,6 +58,7 @@ public:
 	void MoveRight(float AxisValue);
 	void RotateRight(float Value);
 	void Fire();
+	void SwapCannon();
 	void FireSpecial();
 	void SetupCannon(TSubclassOf<ACannon> newCannonClass);
 

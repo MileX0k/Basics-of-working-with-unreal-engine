@@ -26,6 +26,7 @@ protected:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void RotateRight(float Value);
+	void SwapCannon();
 
 	void Fire();
 	void FireSpecial();
