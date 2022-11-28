@@ -37,7 +37,6 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 	TankController = Cast<ATankPlayerController>(GetController());
 	SetupCannon(CannonClass);
-
 }
 
 void ATankPawn::MoveForward(float AxisValue)
@@ -110,21 +109,36 @@ void ATankPawn::FireSpecial()
 	}
 }
 
+void ATankPawn::SwapCannon() 
+{
+	TSubclassOf<ACannon> TemporaryCannon = CannonClassSecond;
+	CannonClassSecond = CannonClass;
+	CannonClass = TemporaryCannon;
+	SetupCannon(CannonClass);
+}
+
 void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannonClass)
 {
 	if (!newCannonClass)
 	{
+		Cannon->Destroy();
+
 		return;
 	}
 	if (Cannon)
 	{
+		if (CannonClassSecond == nullptr) // Если второй слот у пушки свободен, то при подборе пушки она встает на первый слот, а начальная сдвигается на второй
+		{
+			CannonClassSecond = CannonClass;
+		}
+		CannonClass = newCannonClass;
 		Cannon->Destroy();
 	}
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.Instigator = this;
 	spawnParams.Owner = this;
-
+	
 	Cannon = GetWorld()->SpawnActor<ACannon>(newCannonClass, spawnParams);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
